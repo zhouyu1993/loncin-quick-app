@@ -1,0 +1,42 @@
+{
+  "name": "loncin-quick-app",
+  "version": "1.0.0",
+  "subversion": {
+    "toolkit": "0.2.2"
+  },
+  "description": "",
+  "scripts": {
+    "dev": "npm run watch & npm run server",
+    "debug": "hap debug",
+    "build": "hap build",
+    "release": "hap release",
+    "server": "hap server",
+    "watch": "hap watch",
+    "postinstall": "hap postinstall",
+    "hap-update": "hap update",
+    "fa-build": "webpack --config ./node_modules/fa-toolkit/webpack.config.js",
+    "fa-watch": "webpack --watch --config ./node_modules/fa-toolkit/webpack.config.js"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.5.5",
+    "@types/quickapp": "git+https://github.com/vivoquickapp/quickapp-types.git",
+    "babel-eslint": "^10.0.2",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-hybrid": "0.0.5",
+    "fa-toolkit": "file:fa-toolkit-2.0.0-Stable.301.tgz",
+    "hap-toolkit": "^0.5.6",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "regenerator": "^0.14.2",
+    "regenerator-runtime": "^0.13.3"
+  },
+  "dependencies": {},
+  "browserslist": [
+    "chrome 65"
+  ]
+}
