@@ -8,7 +8,7 @@
           <text class="text">¥</text>
           <text class="text" style="height: 40px; font-size: 40px; line-height: 40px;">{{paymentDetail.amount}}</text>
         </div>
-        <div class="status" if="{{paymentDetail.status == 0}}">
+        <div class="status" if="{{+paymentDetail.status === 0}}">
           <text>未支付</text>
         </div>
       </div>

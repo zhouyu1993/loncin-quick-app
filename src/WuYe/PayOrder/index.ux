@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="bottom" if="{{userFree.status == 0}}">
+    <div class="bottom" if="{{+userFree.status === 0}}">
       <div class="list status-0">
         <div for="{{mouthamount}}" class="list-item">
           <text class="label">{{$item.accountName}}：</text>
@@ -131,6 +131,9 @@ export default {
     totalMoney: 0,
   },
   async onShow () {
+    this.isAllSelect = false
+    this.totalMoney = 0
+
     const userInfo = await user.getLocal() || {}
 
     this.userInfo = userInfo

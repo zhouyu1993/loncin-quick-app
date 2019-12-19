@@ -7,6 +7,7 @@
   "description": "",
   "scripts": {
     "dev": "npm run watch & npm run server",
+    "prod": "npm run release & npm run server",
     "build": "hap build",
     "release": "hap release",
     "watch": "hap watch",

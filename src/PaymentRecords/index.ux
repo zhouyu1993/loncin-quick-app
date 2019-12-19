@@ -12,15 +12,15 @@
           <div style="margin: 34px;">
             <image src="../Common/jiaofei/icon-wuye@2x.png"></image>
           </div>
-          <div style="flex-direction: column; width: 520px; margin: 20px 0;">
+          <div style="flex-direction: column; flex: 1; margin: 20px 34px 20px 0;">
             <div class="div">
-              <text class="text" if="{{item.payment_type === '1'}}">物业费</text>
+              <text class="text" if="{{+item.payment_type === 1}}">物业费</text>
               <text class="text1">¥{{item.amount || 0}}</text>
             </div>
             <div style="flex-direction: column; margin-top: 20px">
               <text class="text2">{{item.community_name || '社区名称'}} | {{item.address || '房屋地址'}}</text>
               <div>
-                <text class="text3">{{item.add_time}}</text><text class="text4">{{item.status == 0 ? '未支付' : ''}}</text>
+                <text class="text3">{{item.add_time}}</text><text class="text4">{{+item.status === 0 ? '未支付' : ''}}</text>
               </div>
             </div>
           </div>

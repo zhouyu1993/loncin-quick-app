@@ -20,8 +20,8 @@
       </div>
     </div>
     <div class="coupon-banner">
-      <text style="font-size:22px;font-weight:500;color:rgba(142,41,39,1);">优惠推荐</text>
-      <text @click="toMore" style="font-size:22px; color:rgba(52,103,237,1);">更多></text>
+      <text style="font-size: 30px; font-weight: 500; color: rgba(142, 41, 39, 1);">优惠推荐</text>
+      <text @click="toMore" style="font-size: 30px; color: rgba(52, 103, 237, 1);">更多></text>
     </div>
     <div class="coupon-list">
       <block for="{{coupons}}">
