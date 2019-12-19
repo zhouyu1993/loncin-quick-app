@@ -46,10 +46,13 @@
 <script>
 import prompt from '@system.prompt'
 import router from '@system.router'
+
 import request from '../lib/request'
-import User from '../lib/user'
 import storage from '../lib/storage'
+import User from '../lib/user'
+
 const user = new User()
+
 export default {
   timer: null,
   protected: {
@@ -64,30 +67,35 @@ export default {
     isChecked: false,
     showFLag: false,
   },
-  onInit() {
+  onInit () {
     console.log('login-----', this.referer)
+
     setTimeout(() => {
       this.$child('name').focus()
     }, 1000)
   },
-  async onShow() {
+  async onShow () {
     const userInfo = await storage.getJSON('user')
+
     if (userInfo) {
       router.replace({
         uri: '/Index'
       })
     } else {
       const loginInfo = await storage.getJSON('loginInfo') || {}
+
       this.phone = loginInfo.phone || this.phone
       this.code = loginInfo.code || this.code
       this.isChecked = loginInfo.isChecked || false
+
       this.showFLag = true
     }
   },
-  onDestroy() {
+  onDestroy () {
     if (this.timer) clearInterval(this.timer)
   },
-  async submit() {
+
+  async submit () {
     if (!/^\d{6}$/.test(this.code)) {
       return prompt.showToast({
         message: '请输入正确的验证码！'
@@ -100,30 +108,60 @@ export default {
       })
     }
 
-    await user.login(this.phone, this.code).then(res => {
+    await user.login(this.phone, this.code).then(async res => {
       if (res.code === 0) {
-        prompt.showToast({ message: '登录成功！' })
-        // 如果业主只有一套房子，直接进入首页，若业主有多套房子，进入选择页面
-        return router.replace({
-          uri: '/SelectAddr',
-          params: { referer: this.referer }
+        prompt.showToast({
+          message: '登录成功！'
         })
+
+        const { addresses = [], communities = [], } = res.data.user || {}
+
+        if (addresses.length > 1 || communities.length > 1) {
+          // 如果业主有多套房子，进入选择页面
+          return router.replace({
+            uri: '/SelectAddr',
+            params: {
+              referer: this.referer
+            }
+          })
+        } else {
+          // 如果业主只有一套房子，进入首页
+          const community_id = communities[0].community_id
+
+          const selectAddr = addresses.find(item => item.community_id === community_id)
+
+          if (selectAddr) {
+            await storage.set('selectAddr', JSON.stringify(selectAddr))
+
+            return router.replace({
+              uri: '/Index'
+            })
+          }
+        }
       } else {
-        prompt.showToast({ message: res.msg })
+        prompt.showToast({
+          message: res.msg
+        })
       }
     })
   },
-  async onPageAgree(type) {
-    await storage.set('loginInfo', { name: this.name, phone: this.phone, code: this.code, isChecked: this.isChecked })
+  async onPageAgree (type) {
+    await storage.set('loginInfo', {
+      name: this.name,
+      phone: this.phone,
+      code: this.code,
+      isChecked: this.isChecked
+    })
+
     router.push({
       uri: `/Agree/${type ? 'Agreement' : 'Privacy'}`,
       params: {}
     })
   },
-  onChecked() {
+  onChecked () {
     this.isChecked = !this.isChecked
   },
-  restartSend() {
+  restartSend () {
     if (!/^\d{11}$/.test(this.phone)) {
       return prompt.showToast({ message: '请输入正确的手机号' })
     }
@@ -149,16 +187,16 @@ export default {
       })
     }
   },
-  codeChange(e) {
+  codeChange (e) {
     this.code = e.detail.value
   },
-  nameChange(e) {
+  nameChange (e) {
     this.name = e.detail.value
   },
-  phoneChange(e) {
+  phoneChange (e) {
     this.phone = e.detail.value
   },
-  clear() {
+  clear () {
   },
 }
 </script>

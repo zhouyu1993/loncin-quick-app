@@ -33,11 +33,11 @@ export default class User {
     const res = await request.post('login', { phone, captcha: code })
     const userInfo = res.data?(res.data.user || {}):{}
 
-    if (res.err && !res.code) { 
+    if (res.err && !res.code) {
       prompt.showToast({ message: res.msg})
       return
     }
-    if (userInfo && typeof storage === 'object') { 
+    if (userInfo && typeof storage === 'object') {
       await storage.set(userKey, JSON.stringify(userInfo))
     }
     return res
@@ -50,6 +50,7 @@ export default class User {
     storage.delete('create')
     storage.delete('selectAddr')
     storage.delete('loginInfo')
+
     router.replace({
       uri: '/Login'
     })

@@ -26,11 +26,12 @@
 </style>
 
 <script>
-import prompt from '@system.prompt'
-import User from '../lib/user'
 import device from '@system.device'
+import prompt from '@system.prompt'
+
 import storage from '../lib/storage'
-import router from '@system.router'
+import User from '../lib/user'
+
 const user = new User()
 
 export default {
@@ -40,24 +41,22 @@ export default {
     pageName: 'Home',       // 当前页面
     currentIndex: 0,        // tab索引
     userInfo: {},           // 全局登陆用户信息
-    selectAddr: {},         // 
+    selectAddr: {},         //
     community_id: '',
   },
-  async onInit() {
-    const userInfo = await user.getLocal()
-    if (userInfo) {
-      this.userInfo = userInfo
-    }
-  },
-  async onShow() {
-    const userInfo = await user.getLocal()
-    if (userInfo) {
-      this.userInfo = userInfo
-      await storage.set('quitFlag', false)
-    }
+  onInit () {
 
   },
-  onReady() {
+  async onShow () {
+    const userInfo = await user.getLocal()
+
+    if (userInfo) {
+      this.userInfo = userInfo
+
+      await storage.set('quitFlag', false)
+    }
+  },
+  onReady () {
     device.getInfo({
       success: async (ret) => {
         if (ret) {
@@ -69,7 +68,8 @@ export default {
       }
     })
   },
-  onChange(e) {
+
+  onChange (e) {
     this.currentIndex = e.detail.index
   },
   // 懒加载

@@ -28,7 +28,7 @@
                   <div class="right-wrap">
                     <div class="imgContainer">
                       <image if="{{!item.pics}}" style="width: 100%;" src="/Common/icon-notice-right@2x.png"></image>
-                      <image else style="width: 100%;" src="{{item.pics}}" alt=""></image>
+                      <image else style="width: 100%;" src="{{item.pics}}"></image>
                     </div>
                   </div>
                 </div>

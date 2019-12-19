@@ -35,7 +35,7 @@
             <input class="time" type="button" value="{{'有效期至：' + item.end_time.substring(0, 10)}}" />
           </stack>
           <div class="bottom">
-            <text class="coupon-name">{{item.coupon_name}}</text> 
+            <text class="coupon-name">{{item.coupon_name}}</text>
             <input class="btn {{item.is_get === '0' ? 'wlq' : 'lq' }}" type="button" value="{{item.is_get === '0' ? '去领取' : '已领取'}}" onclick="routePage(item.coupon_id)" />
           </div>
         </list-item>
@@ -48,9 +48,11 @@
     </list>
   </div>
 </template>
+
 <style lang="less">
     @import './index.less';
 </style>
+
 <script>
 import request from '../../lib/request'
 import storage from '../../lib/storage'
@@ -129,9 +131,9 @@ export default {
         this.coupon_list = this.coupon_list.concat(list)
       } else {
         this.hasMoreData = false
-        this.coupon_list = list 
+        this.coupon_list = list
       }
-    })    
+    })
   },
   toSearch() {
     // router.push ({
@@ -145,7 +147,7 @@ export default {
     this.coupon_type = '1'
     router.push({
       uri: '/Mall/CouponsShow',
-      params: { couponId: id } 
+      params: { couponId: id }
     })
   },
 }

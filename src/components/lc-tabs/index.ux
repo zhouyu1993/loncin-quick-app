@@ -3,7 +3,7 @@
     <tabs onchange="onChangeTabIndex" style="margin: 0;">
       <tab-bar style="margin-top: -10px;">
         <div for="{{tabs}}" class="tab-item">
-          <image class="img" src="/Common/{{currentIndex === $idx ? $item.select : $item.default }}" alt=""></image>
+          <image class="img" src="/Common/{{currentIndex === $idx ? $item.select : $item.default }}"></image>
           <text style="color: {{currentIndex === $idx ? 'rgba(142,41,39,1)' : ''}};" class="title">{{$item.title}}</text>
         </div>
       </tab-bar>

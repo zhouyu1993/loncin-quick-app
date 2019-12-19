@@ -12,75 +12,6 @@
   </div>
 </template>
 
-<script>
-import router from '@system.router'
-import prompt from '@system.prompt'
-import User from '../lib/user'
-import storage from '../lib/storage'
-const user = new User()
-export default {
-  private: {
-    
-    communities: [],    // 所有的小区
-    addresses: [],      // 所有的住址
-    addrs: [],          // 小区对应的住址
-    userInfo: {},       // 用户信息
-    selectAddr: null,   // 选中的地址
-  },
-  protected: {
-      referer: '',
-  },
-  async onInit() {
-    console.log('-------', this.referer)
-    const userInfo = await user.getLocal()
-    if (userInfo) {
-      this.userInfo = userInfo
-      const { communities, addresses } = userInfo || {}
-      this.communities = communities || []
-      const community_id = this.communities[0].community_id
-      this.addresses = addresses || []
-      this.addrs = this.addresses.filter(item => item.community_id === community_id)
-      // 默认选中的地址
-      this.selectAddr = this.addrs[0]
-      if (this.selectAddr) {
-        await storage.set('selectAddr', JSON.stringify(this.selectAddr))
-      }
-    }
-  },
-  onMenuPress() {
-    this.$app.$def.showMenu()
-  },
-  onConfirm () {
-    if (this.selectAddr) {
-      storage.set('selectAddr', this.selectAddr)
-      
-      router.replace ({
-        uri: this.referer || '/Index',
-        params: {
-          selectAddr: this.selectAddr,
-          community_id: this.selectAddr.community_id || ''
-        }
-      })
-    } else {
-      prompt.showToast({
-        message: '请选择住址'
-      })
-    }
-  },
-  onSelectPlot (value) {
-    if (value && value.newValue) {
-      this.addrs = this.addresses.filter(item => item.community_id === value.newValue)
-    }
-  },
-  onSelectAddr (value) {
-    if (value && value.newValue) {
-      const addr = this.addrs.filter(item => item.address_id === value.newValue)
-      this.selectAddr = addr[0]
-    }
-  }
-}
-</script>
-
 <style>
   .addr-page {
     flex: 1;
@@ -126,3 +57,81 @@ export default {
     line-height:34px;
   }
 </style>
+
+<script>
+import router from '@system.router'
+import prompt from '@system.prompt'
+
+import storage from '../lib/storage'
+import User from '../lib/user'
+
+const user = new User()
+
+export default {
+  private: {
+    communities: [],    // 所有的小区
+    addresses: [],      // 所有的住址
+    addrs: [],          // 小区对应的住址
+    userInfo: {},       // 用户信息
+    selectAddr: null,   // 选中的地址
+  },
+  protected: {
+    referer: '',
+  },
+  async onInit () {
+    console.log('-------', this.referer)
+
+    const userInfo = await user.getLocal()
+
+    if (userInfo) {
+      this.userInfo = userInfo
+
+      const { communities, addresses } = userInfo || {}
+
+      this.communities = communities || []
+
+      const community_id = this.communities[0].community_id
+
+      this.addresses = addresses || []
+
+      this.addrs = this.addresses.filter(item => item.community_id === community_id)
+
+      // 默认选中的地址
+      this.selectAddr = this.addrs[0]
+
+      if (this.selectAddr) {
+        await storage.set('selectAddr', JSON.stringify(this.selectAddr))
+      }
+    }
+  },
+
+  onConfirm () {
+    if (this.selectAddr) {
+      storage.set('selectAddr', this.selectAddr)
+
+      router.replace ({
+        uri: this.referer || '/Index',
+        params: {
+          selectAddr: this.selectAddr,
+          community_id: this.selectAddr.community_id || ''
+        }
+      })
+    } else {
+      prompt.showToast({
+        message: '请选择住址'
+      })
+    }
+  },
+  onSelectPlot (value) {
+    if (value && value.newValue) {
+      this.addrs = this.addresses.filter(item => item.community_id === value.newValue)
+    }
+  },
+  onSelectAddr (value) {
+    if (value && value.newValue) {
+      const addr = this.addrs.filter(item => item.address_id === value.newValue)
+      this.selectAddr = addr[0]
+    }
+  }
+}
+</script>

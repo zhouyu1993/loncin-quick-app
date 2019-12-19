@@ -130,6 +130,7 @@ export default {
     width: 550px;
     height: 86px;
     margin-top: 75px;
+    margin-bottom: 75px;
     border-radius: 43px;
     background-color: #09ba07;
     font-size: 30px;

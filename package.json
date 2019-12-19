@@ -7,18 +7,18 @@
   "description": "",
   "scripts": {
     "dev": "npm run watch & npm run server",
-    "debug": "hap debug",
     "build": "hap build",
     "release": "hap release",
-    "server": "hap server",
     "watch": "hap watch",
+    "server": "hap server",
+    "commit": "npx git-cz",
     "postinstall": "hap postinstall",
+    "debug": "hap debug",
     "hap-update": "hap update",
     "fa-build": "webpack --config ./node_modules/fa-toolkit/webpack.config.js",
     "fa-watch": "webpack --watch --config ./node_modules/fa-toolkit/webpack.config.js"
   },
   "devDependencies": {
-    "@babel/runtime": "^7.5.5",
     "@types/quickapp": "git+https://github.com/vivoquickapp/quickapp-types.git",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
@@ -35,7 +35,9 @@
     "regenerator": "^0.14.2",
     "regenerator-runtime": "^0.13.3"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/runtime": "^7.7.4"
+  },
   "browserslist": [
     "chrome 65"
   ]

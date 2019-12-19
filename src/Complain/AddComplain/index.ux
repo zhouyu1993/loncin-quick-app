@@ -61,9 +61,12 @@ export default {
   },
   async onInit() {
     const selectAddr = await storage.getJSON('selectAddr') || {}
-    const user = await getUser()
-    this.token = user.token || ''
+
     this.selectAddr = selectAddr
+
+    const user = await getUser() || {}
+
+    this.token = user.token || ''
   },
   goHistory () {
     router.push ({

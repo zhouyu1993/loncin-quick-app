@@ -57,7 +57,7 @@
           <list-item type="expand1" class="expand-list1">
             <div class="expand1" @click="onExpand($item)">
               <text class="expand-title1">{{$item.isExpand ? '收起' : '点击查看详情'}}</text>
-              <image class="expand-icon1" src="/Common/work/{{$item.isExpand ? 'icon-down' : 'xiangshang'}}@2x.png"></image>
+              <image class="expand-icon1" src="/Common/work/{{$item.isExpand ? 'xiangshang' : 'icon-down'}}@2x.png"></image>
             </div>
           </list-item>
           <!-- black -->
@@ -155,7 +155,7 @@ export default {
         this.listData = this.listData.concat(list)
       } else {
         this.hasMoreData = false
-        this.listData = list 
+        this.listData = list
       }
     })
   },

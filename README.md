@@ -1,23 +1,40 @@
 # loncin-quick-app
+
 loncin wuye quick app
 
 [快应用入门](https://doc.quickapp.cn/)
 
 ### 创建项目
-``` hap init <ProjectName> ```
+
+```
+hap init <ProjectName>
+```
 
 ### 安装依赖
-``` npm install ```
+
+```
+npm install
+```
 
 ### 编译项目
-``` npm run build ```
+
+```
+npm run build
+```
 
 ### 自动编译项目
-``` npm run watch ```
+
+```
+npm run watch
+```
 
 ### 安装rpk包
+
 1  启动HTTP服务器
-``` npm run server -- --port 8080 ```
+
+```
+npm run server -- --port 8080
+```
 
 ### 打包部署
 
@@ -27,21 +44,18 @@ loncin wuye quick app
 
 ```
 npm run build
-
 ```
 
 * 增加release签名: 通过openssl命令等工具生成签名文件private.pem、certificate.pem，例如：在工程的sign目录下创建release目录，将私钥文件private.pem和证书文件certificate.pem拷贝进去
 
 ```
 openssl req -newkey rsa:2048 -nodes -keyout private.pem -x509 -days 3650 -out certificate.pem
-
 ```
 
 * 发布程序包: 发布程序包前需要增加release签名，然后在工程的根目录下运行,生成的应用路径为/dist/.signed.rpk
 
 ```
 npm run release
-
 ```
 
 ### 项目相关：
@@ -70,7 +84,6 @@ https://www.xiaopiu.com/h5/byId?type=project&id=5d27eded41a61c2f674f2218
 第三步 在release文件夹 运行 openssl req -newkey rsa:2048 -nodes -keyout private.pem -x509 -days 3650 -out certificate.pem
 第四步 填写 信息
 第五步 切换到根目录  运行 npm run release
-
 ```
 
 2、关于版本号(versionName、versionCode)
@@ -81,7 +94,6 @@ https://www.xiaopiu.com/h5/byId?type=project&id=5d27eded41a61c2f674f2218
 应用版本名称为主版本.次版本格式
 应用版本号为整数，从1开始，每次更新上架请自增1
 ```
-
 
 ### release文件夹中的两个证书文件：
 
@@ -114,13 +126,11 @@ ZURt6AVFcO06K5X8KoBH1rpjP2h7TLngOPSwuvV96WyPNHIXcI13hDafS/GWcm9X
 NInCxDIZtmu8usNxLIRGJfSkiRs5FIsozAcXPYcMnKfbE2HuUTTK5W2dv4Tidra+
 7w5/Sj5DeHYLbFgUzscZpDRT4wW2XuMXUTg2GV6PnMW73/d2
 -----END CERTIFICATE-----
-
 ```
 
 2、private.pem
 
 ```
-
 -----BEGIN PRIVATE KEY-----
 MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDU6RkQhA7vriK+
 g8i50P3Qn8tGzqMlYyyjSPUIYPVwR+k872XgKj7EFKQ1aRWXaCoowlcrQsIXh47h
@@ -149,9 +159,7 @@ KQ+eNpFjyKE45uULKOHPvbQB3FUEE0sDEvVFSIrJEkZW5I+LS9tteCyB5DnGVBWQ
 L2WPbWqVjBDC3dSPdO81F+YCKa7W4NkBcrOoLWwO0+flIRP/lO+tysz09XIyEioK
 IEZ9/TzBjZvwDTtLM9vZv0tNBg==
 -----END PRIVATE KEY-----
-
 ```
-
 
 ### 上传文件流程
 
@@ -163,3 +171,24 @@ https://doc.quickapp.cn/features/system/media.html?h=pickImage
 2、上传图片，通过给后端接口传files，获取你返回的数据
 https://doc.quickapp.cn/features/system/request.html?h=request.upload
 
+### 测试账号
+
+18621199526
+
+验证码：http://lx.kunchuangtech.cn/captcha?phone=18621199526
+
+### 流程
+
+/Login -> 未登录 -> 登录 -> 一套房 -> /Index
+
+/Login -> 未登录 -> 登录 -> 多套房 -> /SelectAddr -> /Index
+
+/Login -> 已登录 -> /Index
+
+### 物业缴费流程
+
+token + address_id -> 是否欠费
+
+欠费 -> 欠费明细 -> 欠费缴费
+
+不欠费 -> 预存明细 -> 预存缴费

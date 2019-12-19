@@ -16,21 +16,21 @@
           <image class="icon" src="/Common/wuye/ren@2x.png"></image>
           <text class="label">姓名</text>
          </div>
-        <text class="value">{{users.name}}</text>
+        <text class="value">{{userInfo.name}}</text>
       </div>
       <div class="header-bottom-item bd-bottom">
         <div class="header-bottom-left">
           <image class="icon" src="/Common/wuye/dianhua1@2x.png"></image>
           <text class="label">电话</text>
          </div>
-        <text class="value">{{users.phone}}</text>
+        <text class="value">{{userInfo.phone}}</text>
       </div>
       <div class="header-bottom-item">
         <div class="header-bottom-left">
-          <image class="icon" style="height: 26px;" src="/Common/wuye/weizhi@2x.png"></image>
+          <image class="icon" src="/Common/wuye/weizhi@2x.png"></image>
           <text class="label">地址</text>
          </div>
-        <text class="value">{{address}}</text>
+        <text class="value">{{selectAddr.address}}</text>
       </div>
     </div>
     <div class="btn-css">
@@ -39,7 +39,7 @@
     <text class="quick">快捷缴费</text>
     <div class="tabs">
       <div for="{{tabs}}" class="tab-item" @click="tabPage($item.routeName)">
-        <image class="img" src="{{$item.url}}" alt=""></image>
+        <image class="img" src="{{$item.url}}"></image>
         <text class="icon-title">{{$item.title}}</text>
       </div>
     </div>
@@ -53,47 +53,86 @@
 <script>
 import prompt from '@system.prompt'
 import router from '@system.router'
-import User from '../../lib/user'
-import storage from '../../lib/storage'
+
 import request from '../../lib/request'
+import storage from '../../lib/storage'
+import User from '../../lib/user'
+
 const user = new User()
 
 export default {
   protected: {
-    users: {},
-    tabs: [
-      { url: '/Common/wuye/shui@2x.png', title: '缴纳水费', routeName: '' },
-      { url: '/Common/wuye/dian@2x.png', title: '缴纳电费', routeName: '' },
-      { url: '/Common/wuye/ranqifei@2x.png', title: '缴纳燃气费', routeName: '' },
-      { url: '/Common/wuye/icon-gongnuan@2x.png', title: '缴纳供暖费', routeName: '' },
-      { url: '/Common/wuye/wuye-2@2x.png', title: '缴纳物业费', routeName: '/WuYe/PayOrder' },
-      { url: '/Common/wuye/icon-socar-parking@2x.png', title: '缴纳停车费', routeName: '' }
-    ],
+    userInfo: {},
     selectAddr: {},
-    address: '',
-    payStatus: ''
+
+    tabs: [
+      {
+        url: '/Common/wuye/shui@2x.png',
+        title: '缴纳水费',
+        routeName: ''
+      },
+      {
+        url: '/Common/wuye/dian@2x.png',
+        title: '缴纳电费',
+        routeName: ''
+      },
+      {
+        url: '/Common/wuye/ranqifei@2x.png',
+        title: '缴纳燃气费',
+        routeName: ''
+      },
+      {
+        url: '/Common/wuye/icon-gongnuan@2x.png',
+        title: '缴纳供暖费',
+        routeName: ''
+      },
+      {
+        url: '/Common/wuye/wuye-2@2x.png',
+        title: '缴纳物业费',
+        routeName: '/WuYe/PayOrder'
+      },
+      {
+        url: '/Common/wuye/icon-socar-parking@2x.png',
+        title: '缴纳停车费',
+        routeName: ''
+      }
+    ],
+
+    userFree: {},
+    payStatus: '',
   },
-  async onInit() {
-    const userInfo = await user.getLocal()
-    if (userInfo) {
-      this.users = userInfo
-    }
+  async onShow () {
+    const userInfo = await user.getLocal() || {}
+
+    this.userInfo = userInfo
+
     const selectAddr = await storage.getJSON('selectAddr') || {}
+
     this.selectAddr = selectAddr
-    this.address = selectAddr.address || ''
+
     const id = selectAddr.address_id || ''
-    if (id) {
-      await this.getPrepayInfo(id)
-    }
+
+    this.getUserFree(id)
   },
 
-  getPrepayInfo(id) {
+  getUserFree (id) {
     if (!id) {
       return
     }
-    request.get(`prepay?address_id=${5}`).then((res) => {
+
+    request.get(`getUserFree`, {
+      address_id: id,
+    }).then((res) => {
+      console.log(res)
+
       if (res.code === 0) {
-        this.payStatus = res.data.is_pre === '0' ? '已欠费' : ''
+        const data = res.data || {}
+
+        this.userFree = data
+
+        const owe = +data.status === 1
+
+        this.payStatus = owe ? '已欠费' : ''
       }
     })
   },
@@ -102,10 +141,14 @@ export default {
       uri: '/WuYe/PayOrder'
     })
   },
-  tabPage(path) {
+  tabPage (path) {
     if (path) {
       router.push ({
         uri: path
+      })
+    } else {
+      prompt.showToast({
+        message: '未完成的功能'
       })
     }
   },

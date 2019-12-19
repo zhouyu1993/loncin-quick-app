@@ -32,7 +32,7 @@
         <list-item type="expand" class="expand-list">
           <div class="expand" @click="onExpand($item)">
             <text class="expand-title">{{$item.isExpand ? '收起' : '点击查看详情'}}</text>
-            <image class="expand-icon" src="/Common/work/{{$item.isExpand ? 'icon-down' : 'xiangshang'}}@2x.png"></image>
+            <image class="expand-icon" src="/Common/work/{{$item.isExpand ? 'xiangshang' : 'icon-down'}}@2x.png"></image>
           </div>
         </list-item>
         <!-- black -->

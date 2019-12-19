@@ -40,14 +40,14 @@
               </block>
               <text class="dot-end"></text>
             </div>
-            
+
           </stack>
         </list-item>
         <!-- expand -->
         <list-item type="expand" class="expand-list">
           <div class="expand" @click="onExpand($item)">
             <text class="expand-title">{{$item.isExpand ? '收起' : '点击查看详情'}}</text>
-            <image class="expand-icon" src="/Common/work/{{$item.isExpand ? 'icon-down' : 'xiangshang'}}@2x.png"></image>
+            <image class="expand-icon" src="/Common/work/{{$item.isExpand ? 'xiangshang' : 'icon-down'}}@2x.png"></image>
           </div>
         </list-item>
         <!-- black -->
@@ -62,7 +62,7 @@
 </template>
 
 <style lang="less">
-  @import './list.less';
+  @import './index.less';
 </style>
 
 <script>
@@ -86,7 +86,7 @@ export default {
     // 获取数据并渲染列表
     this.getList()
   },
-  
+
   // 滑动到底部时加载更多
   renderMoreListItem () {
     if (!this.isLoadingData) {
@@ -122,7 +122,7 @@ export default {
         this.listData = this.listData.concat(list)
       } else {
         this.hasMoreData = false
-        this.listData = list 
+        this.listData = list
       }
     })
   },
@@ -153,4 +153,3 @@ export default {
   }
 }
 </script>
-  

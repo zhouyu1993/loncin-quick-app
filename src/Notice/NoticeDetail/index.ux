@@ -40,12 +40,12 @@
 </style>
 
 <script>
+import shareSe from '@service.share'
 import prompt from '@system.prompt'
 import router from '@system.router'
-import shortcut from '@system.shortcut'
+
 import request from '../../lib/request'
-import storage from '../../lib/storage'
-import shareSe from '@service.share'
+
 export default {
   protected: {
     noticeId: '',                        // id
@@ -54,7 +54,7 @@ export default {
     isCreateIcon: false,                 // 是否创建桌面图标
     content: 'adhkadasdasdasdadsdsa<p>djkasdnkasdsadasd</p>dasdasdasd<image src=http://lx.kunchuangtech.cn/uploads/1564307409_39258.jpg"></image>'
   },
-  
+
   onInit() {
     this.getDetail()
     setTimeout(() => {
@@ -93,19 +93,19 @@ export default {
     })
   },
   share() {
-    // const uri = await request.download('http:' + this.production.coverImages[0].url + '@!k160')
+    // const imagePath = await request.download('http:' + this.production.coverImages[0].url + '@!k160')
+
     shareSe.share({
       shareType: 0,
-      title: '分享的标题',
-      summary: '分享的摘要',
-      targetUrl: 'https://www.autodis.cn',
+      title: this.noticeDetail.notify_name || '分享的标题',
+      summary: '点击链接查看更多' || '分享的摘要',
+      targetUrl: `https://zhouyu1993.github.io/awesome/vue-demo/#/midc?packageName=com.cqlxwy.kyy&path=Notice/NoticeDetail&params=${encodeURIComponent(JSON.stringify({noticeId:this.noticeId}))}`,
       imagePath: '/Common/logo.png',
       success: function (data) {
-        console.info('handling success')
+        console.info('handling success', data)
       },
       fail: function (data, code) {
-        console.error(data)
-        console.error(`handling fail, code = ${code}`)
+        console.error('handling fail', data, code)
       }
     })
   },
@@ -114,6 +114,7 @@ export default {
     if (!this.noticeId) {
       return
     }
+
     request.get(`notify/detail/${this.noticeId}`, { notify_id: this.noticeId }).then(({ data }) => {
       if (data && data.notify_detail) {
         this.noticeDetail = data.notify_detail

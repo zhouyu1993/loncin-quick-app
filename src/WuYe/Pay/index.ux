@@ -10,33 +10,37 @@
           <text class="label">缴费金额（元）：</text>
           <div class="right">
             <text class="money">¥</text>
-            <text class="value">{{totalMoney}}</text>
+            <text class="value">{{amount}}</text>
           </div>
         </div>
       </div>
     </div>
-    <div class="middle">
+
+    <!-- <div class="middle">
       <div style="margin: 22px 0px;">
         <text class="type-title">支付方式</text>
       </div>
-      <div class="border-item item">
+      <div class="border-item item" @click="selectItem(0)">
         <div class="icon-item">
           <image class="icon" src="../../Common/wuye/weixin@2x.png"></image>
           <text class="type">微信支付：</text>
         </div>
-        <image @click="selectItem(0)" class="select" src="../../Common/wuye/{{selectedType === 1 ? 'icon-no-select@2x' : 'all_selects'}}.png" />
+        <image class="select" src="../../Common/wuye/{{selectedType === 1 ? 'icon-no-select@2x' : 'all_selects'}}.png" />
       </div>
-      <div class="item">
+      <div class="item" @click="selectItem(1)">
         <div class="icon-item">
           <image class="icon" src="../../Common/wuye/zhifubao@2x.png"></image>
           <text class="type" style="color:rgba(26,172,235,1);">支付宝支付：</text>
         </div>
-        <image @click="selectItem(1)" class="select" src="../../Common/wuye/{{selectedType === 0 ? 'icon-no-select@2x' : 'all_selects'}}.png" />
+        <image class="select" src="../../Common/wuye/{{selectedType === 0 ? 'icon-no-select@2x' : 'all_selects'}}.png" />
       </div>
-    </div>
+    </div> -->
+
     <div class="fixed-container">
       <input class="btn" type="button" value="确认支付" onclick="onConfirm" />
     </div>
+
+    <web class="web" id="web" src="{{url}}" if="{{url}}" ontitlereceive="ontitlereceive"></web>
   </div>
 </template>
 
@@ -47,47 +51,118 @@
 <script>
 import prompt from '@system.prompt'
 import router from '@system.router'
+
 import request from '../../lib/request'
+import storage from '../../lib/storage'
+import User from '../../lib/user'
+
+const user = new User()
+
 export default {
   protected: {
-    totalMoney: 0,
+    is_pre: '0',
+    amount: '',
+    wuguan_amount: '',
+    gongtan_amount: '',
+    months: '',
+    yiruanorder: '',
+
     selectedType: 0,
+
+    url: '',
   },
-  onInit() {
+  async onInit () {
+    const userInfo = await user.getLocal() || {}
+
+    this.userInfo = userInfo
+
+    const selectAddr = await storage.getJSON('selectAddr') || {}
+
+    this.selectAddr = selectAddr
+
+    console.log(this.userInfo, this.selectAddr, this.is_pre, this.amount, this.wuguan_amount, this.gongtan_amount, this.months, this.yiruanorder)
   },
-  selectItem(id) {
-    this.selectedType = id
+  onBackPress () {
+    const web = this.$element('web')
+
+    if (web) {
+      web.canBack({
+        callback: (e) => {
+          if (e) {
+            web.back()
+          } else {
+            this.cancel()
+          }
+        }
+      })
+    } else {
+      this.cancel()
+    }
+
+    return true
   },
-  onConfirm() {
-    // prompt.showDialog({
-    //   title: '',
-    //   message: '是否取消订单？',
-    //   buttons: [
-    //     {
-    //       text: '否',
-    //       color: '#1AACEB',
-    //     },
-    //     {
-    //       text: '是',
-    //       color: '#8E2927'
-    //     }
-    //   ],
-    //   success: function(data) {
-    //     console.info('handling callback', data)
-    //   },
-    //   cancel: function() {
-    //     console.info('handling cancel')
-    //   },
-    //   fail: function(data, code) {
-    //     console.error(`handling fail, code = ${code}`)
-    //   }
-    // })
-    // prompt.showToast({
-    //   message: `已选择, ${this.selectedType === 0 ? '微信' : '支付宝'}支付，暂无支付功能`
-    // })
+
+  cancel () {
+    prompt.showDialog({
+      title: '',
+      message: '是否取消该订单？',
+      buttons: [
+        {
+          text: '否',
+          color: '#8E2927'
+        },
+        {
+          text: '是',
+          color: '#1AACEB'
+        }
+      ],
+      success: (e) => {
+        if (e.index === 1) {
+          router.back()
+        }
+      },
+    })
   },
-  onOrder() {
-    // payment/unifiedorder
-  }
+  selectItem (id) {
+    this.selectedType = +id
+  },
+  async onConfirm () {
+    request.post(`payment/unifiedorder`, {
+      payment_type: 1,
+
+      user_id: this.userInfo.user_id,
+      user_name: this.userInfo.name,
+      user_phone: this.userInfo.phone,
+
+      community_id: this.selectAddr.community_id,
+      community_name: this.selectAddr.community_name,
+      address_id: this.selectAddr.address_id,
+      address: this.selectAddr.address,
+
+      is_pre: this.is_pre,
+      amount: this.amount,
+      wuguan_amount: this.wuguan_amount,
+      gongtan_amount: this.gongtan_amount,
+      months: this.months,
+      yiruanorder: this.yiruanorder,
+    }).then((res) => {
+      console.log(res)
+
+      if (res.code === 0) {
+        const data = res.data || {}
+
+        const url = data.url
+
+        this.url = url
+      } else {
+        prompt.showToast({
+          message: res.msg || 'system error'
+        })
+      }
+    })
+  },
+  ontitlereceive (e) {
+    console.log('ontitlereceive', e)
+  },
 }
 </script>

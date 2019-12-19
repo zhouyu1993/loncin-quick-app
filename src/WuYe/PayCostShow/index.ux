@@ -4,23 +4,26 @@
       <div class="header">
         <image src="../../Common/wuye/icon-weixiu@2x.png"></image>
         <text style="margin-top:10px;text-align: center;height:22px;font-size:22px;font-family:PingFangSC-Regular;font-weight:500;color:rgba(51,51,51,1);line-height:22px;">物业费</text>
-        <div style="align-items: center;justify-content: center;">
+        <div style="align-items: flex-end;justify-content: center;">
           <text class="text">¥</text>
-          <text class="text" style="font-size: 41px;">{{paymentDetail.amount}}</text>
+          <text class="text" style="height: 40px; font-size: 40px; line-height: 40px;">{{paymentDetail.amount}}</text>
+        </div>
+        <div class="status" if="{{paymentDetail.status == 0}}">
+          <text>未支付</text>
         </div>
       </div>
       <div class="info">
         <div class="info-item">
           <text class="label">物业费：</text>
-          <text class="value">¥{{paymentDetail.amount}}</text>
+          <text class="value">¥{{paymentDetail.wuguan_amount}}</text>
         </div>
         <div class="info-item">
           <text class="label">公摊费：</text>
-          <text class="value">¥{{paymentDetail.amount}}</text>
+          <text class="value">¥{{paymentDetail.gongtan_amount}}</text>
         </div>
         <div class="info-item" style="justify-content: flex-end;">
           <text class="label">月数：</text>
-          <text class="value">¥{{paymentDetail.amount}}</text>
+          <text class="value">{{paymentDetail.months}}</text>
         </div>
       </div>
     </div>
@@ -54,26 +57,6 @@
         <text class="text2">{{paymentDetail.payment_no}}</text>
       </div>
     </div>
-    <div class="bottom">
-      <div class="label-title">
-        <text class="title">欠费明细 （元/月）</text>
-      </div>
-      <div class="list">
-        <div for="item in list" class="list-item">
-          <text class="time">2019年{{item.time}}月</text>
-          <div class="item-right">
-            <div class="common">
-              <text class="label">物管费：</text>
-              <text class="label value">{{item.wuguan_amount}}</text>
-            </div>
-            <div class="common" style="margin-top: 16px;">
-              <text class="label">公摊费：</text>
-              <text class="label value">{{item.gongtan_amount}}</text>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>  
   </div>
 </template>
 
@@ -83,27 +66,26 @@
 
 <script>
 import prompt from '@system.prompt'
-import router from '@system.router'
+
 import request from '../../lib/request'
+
 export default {
   protected: {
     payment_id: '',                        // id
     paymentDetail: {},                     // 详情
-    isCreateIcon: false,                   // 是否创建桌面图标
-    list: [
-      { time: 1, wuguan_amount: 223.123, gongtan_amount: 12.32 },
-      { time: 1, wuguan_amount: 223.123, gongtan_amount: 12.32 },
-    ]
   },
-  
   onInit() {
     this.getDetail()
   },
+
   getDetail() {
     if (!this.payment_id) {
       return
     }
-    request.get(`payment/detail/${this.payment_id}`, { payment_id: this.noticeId }).then(({ data }) => {
+
+    request.get(`payment/detail/${this.payment_id}`).then(({ data }) => {
+      console.log(data)
+
       if (data && data.payment_detail) {
         this.paymentDetail = data.payment_detail
       }

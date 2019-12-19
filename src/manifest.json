@@ -1,10 +1,10 @@
 {
   "package": "com.cqlxwy.kyy",
   "name": "隆鑫生活",
-  "versionName": "1.0.2",
-  "versionCode": "1002",
-  "minPlatformVersion": "1040",
   "icon": "/Common/logo@2x.png",
+  "versionName": "1.0.2",
+  "versionCode": 2,
+  "minPlatformVersion": 1040,
   "features": [
     {
       "name": "service.share",
@@ -16,40 +16,52 @@
       }
     },
     {
+      "name": "service.wxpay",
+      "params": {
+        "url": "http://your.domain/page"
+      }
+    },
+    {
+      "name": "service.alipay"
+    },
+    {
+      "name": "service.pay"
+    },
+    {
+      "name": "system.router"
+    },
+    {
       "name": "system.share"
     },
     {
       "name": "system.prompt"
     },
     {
-      "name": "system.router"
+      "name": "system.webview"
     },
     {
-      "name": "system.shortcut"
+      "name": "system.request"
     },
     {
       "name": "system.fetch"
     },
     {
-      "name": "system.webview"
-    },
-    {
-      "name": "service.pay"
-    },
-    {
       "name": "system.storage"
     },
     {
-      "name": "service.alipay"
-    },
-    {
-      "name": "system.device"
+      "name": "system.shortcut"
     },
     {
       "name": "system.calendar"
     },
     {
-      "name": "system.request"
+      "name": "system.device"
+    },
+    {
+      "name": "system.media"
+    },
+    {
+      "name": "system.image"
     }
   ],
   "permissions": [
@@ -59,13 +71,25 @@
   ],
   "config": {
     "logLevel": "debug",
-    "designWidth": 640,
+    "designWidth": 750,
     "data": {}
   },
   "router": {
     "entry": "Login",
     "pages": {
+      "About": {
+        "component": "index"
+      },
+      "Login": {
+        "component": "index"
+      },
+      "SelectAddr": {
+        "component": "index"
+      },
       "Index": {
+        "component": "index"
+      },
+      "Home": {
         "component": "index"
       },
       "WorkOrder/Main": {
@@ -77,37 +101,16 @@
       "Profile": {
         "component": "index"
       },
-      "Home": {
-        "component": "index"
-      },
-      "About": {
-        "component": "index"
-      },
-      "Login": {
-        "component": "index"
-      },
-      "SelectAddr": {
-        "component": "index"
-      },
       "Notice/NoticeList": {
         "component": "index"
       },
       "Notice/NoticeDetail": {
         "component": "index"
       },
-      "Mall/List": {
-        "component": "index"
-      },
-      "Mall/CouponsShow": {
-        "component": "index"
-      },
-      "Mall/MyCoupns": {
+      "Repair/AddRepair": {
         "component": "index"
       },
       "WuYe/Home": {
-        "component": "index"
-      },
-      "PaymentRecords": {
         "component": "index"
       },
       "WuYe/PayCostShow": {
@@ -119,7 +122,16 @@
       "WuYe/Pay": {
         "component": "index"
       },
-      "Repair/AddRepair": {
+      "PaymentRecords": {
+        "component": "index"
+      },
+      "Mall/List": {
+        "component": "index"
+      },
+      "Mall/MyCoupns": {
+        "component": "index"
+      },
+      "Mall/CouponsShow": {
         "component": "index"
       },
       "Complain/ComplainList": {
@@ -137,12 +149,14 @@
     }
   },
   "display": {
+    "backgroundColor": "#ffffff",
+    "fullScreen": false,
+    "titleBar": true,
     "titleBarBackgroundColor": "#f2f2f2",
     "titleBarTextColor": "#414141",
     "titleBarText": "",
-    "fullScreen": false,
-    "titleBar": true,
     "menu": true,
+    "windowSoftInputMode": "adjustPan",
     "pages": {
       "About": {
         "menu": false
@@ -154,7 +168,7 @@
       },
       "SelectAddr": {
         "menu": false,
-        "titleBarText": "",
+        "titleBarText": "切换小区",
         "titleBar": true
       },
       "Index": {
@@ -162,18 +176,22 @@
         "titleBarText": "",
         "titleBar": false
       },
+      "Home": {
+        "menu": false,
+        "titleBar": false
+      },
       "WorkOrder/Main": {
         "menu": false,
         "titleBarText": "",
         "titleBar": true
       },
+      "WorkOrder/HistoryList": {
+        "menu": false,
+        "titleBarText": "报修记录"
+      },
       "Profile": {
         "menu": false,
         "titleBar": true
-      },
-      "Home": {
-        "menu": false,
-        "titleBar": false
       },
       "Notice/NoticeList": {
         "menu": false,
@@ -181,9 +199,36 @@
         "titleBar": true
       },
       "Notice/NoticeDetail": {
-        "menu": false,
         "titleBarText": "公告详情",
         "titleBar": true
+      },
+      "Repair/AddRepair": {
+        "menu": false,
+        "titleBarText": "物业报修",
+        "titleBar": false
+      },
+      "WuYe/Home": {
+        "menu": false,
+        "titleBarText": "物业缴费",
+        "titleBar": true,
+        "titleBarBackgroundColor": "#8E2927",
+        "titleBarTextColor": "#FBFBFB"
+      },
+      "WuYe/PayCostShow": {
+        "menu": false,
+        "titleBarText": "缴费详情"
+      },
+      "WuYe/PayOrder": {
+        "menu": false,
+        "titleBarText": "物业缴费"
+      },
+      "WuYe/Pay": {
+        "menu": false,
+        "titleBarText": "物业缴费"
+      },
+      "PaymentRecords": {
+        "menu": false,
+        "titleBarText": "缴费记录"
       },
       "Mall/List": {
         "menu": false,
@@ -193,44 +238,18 @@
       "Mall/MyCoupns": {
         "titleBarText": "我的优惠券"
       },
-      "WuYe/Home": {
+      "Mall/CouponsShow": {
+        "component": "index",
+        "titleBarText": "优惠券"
+      },
+      "Complain/AddComplain": {
         "menu": false,
-        "titleBarText": "物业缴费",
-        "titleBar": true,
-        "titleBarBackgroundColor": "#8E2927",
-        "titleBarTextColor": "#FBFBFB"
-      },
-      "PaymentRecords": {
-        "titleBarText": "缴费记录"
-      },
-      "WuYe/PayCostShow": {
-        "titleBarText": "缴费详情"
-      },
-      "WuYe/PayOrder": {
-        "titleBarText": "物业缴费",
-        "menu": false
-      },
-      "WuYe/Pay": {
-        "titleBarText": "物业缴费",
-        "menu": false
-      },
-      "WorkOrder/HistoryList": {
-        "titleBarText": "历史记录",
-        "menu": false
-      },
-      "Repair/AddRepair": {
-        "titleBarText": "物业报修",
-        "menu": false,
+        "titleBarText": "投诉建议",
         "titleBar": false
       },
       "Complain/ComplainList": {
-        "titleBarText": "投诉记录",
-        "menu": false
-      },
-      "Complain/AddComplain": {
-        "titleBarText": "投诉建议",
         "menu": false,
-        "titleBar": false
+        "titleBarText": "投诉记录"
       },
       "Agree/Agreement": {
         "menu": false,
@@ -243,6 +262,5 @@
         "titleBar": true
       }
     }
-  },
-  "windowSoftInputMode": "adjustPan"
+  }
 }
