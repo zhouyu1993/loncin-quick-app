@@ -48,11 +48,14 @@ import request from '../../lib/request'
 
 export default {
   protected: {
-    noticeId: '',                        // id
     pageTitle: '物业公告',                // 页面标题
     noticeDetail: {},                    // 详情
     isCreateIcon: false,                 // 是否创建桌面图标
     content: 'adhkadasdasdasdadsdsa<p>djkasdnkasdsadasd</p>dasdasdasd<image src=http://lx.kunchuangtech.cn/uploads/1564307409_39258.jpg"></image>'
+  },
+
+  public: {
+    noticeId: '',                        // id
   },
 
   onInit() {
